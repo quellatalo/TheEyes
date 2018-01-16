@@ -1,6 +1,6 @@
 # TheEyes
 
-This TheEyes library provides methods to read and find images on the screen. A part of alternative tools to sikulix.
+This TheEyes library provides methods to read and find images on the screen. A part of alternative tools to [sikulix](http://sikulix.com/).
 
 _This library was built and tested on Windows 10 (64bit) with .NET Framework 3.5._
 
