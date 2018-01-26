@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/quellatalo/TheEyes</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This TheEyes library provides methods to read and find images on the screen. A part of alternative tools to sikulix.</description>
-    <releaseNotes>Minor exception related change. (and moved to github)</releaseNotes>
+    <releaseNotes>Minor exception related change.</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>sikuli sikulix macro automation screen image picture finding searching reading</tags>
   </metadata>

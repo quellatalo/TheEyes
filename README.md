@@ -48,19 +48,22 @@ void HandsAndEyesTest()
         new Point(area.Center.X-14,area.Center.Y+14)
     };
 
-    Mouse.DefaultMouseActionDelay = 111; // set some delay after each mouse action, it's easier to observe
+    MouseHandler mouse = new MouseHandler();
+    KeyboardHandler keyboard = new KeyboardHandler();
+
+    mouse.DefaultMouseActionDelay = 111; // set some delay after each mouse action, it's easier to observe
 
     // Draw on Paint's canvas
-    Mouse.LeftDrag(points1);
-    Mouse.LeftDrag(points2);
+    mouse.LeftDrag(points1);
+    mouse.LeftDrag(points2);
 
-    Keyboard.DefaultKeyboardActionDelay = 41; // set some delay after each keyboard action
+    keyboard.DefaultKeyboardActionDelay = 41; // set some delay after each keyboard action
 
     // Switch to Paint's select mode
-    Keyboard.KeyDown(Keys.LControlKey);
-    Keyboard.KeyTyping(Keys.A);
-    Keyboard.KeyUp(Keys.LControlKey);
-    Keyboard.KeyTyping(Keys.Escape);
+    keyboard.KeyDown(Keys.LControlKey);
+    keyboard.KeyTyping(Keys.A);
+    keyboard.KeyUp(Keys.LControlKey);
+    keyboard.KeyTyping(Keys.Escape);
 
     // The drawing's area
     Area myDrawingArea = new Area(
@@ -69,22 +72,22 @@ void HandsAndEyesTest()
             new Size(32, 32)));
 
     // In Paint, select the drawing
-    Mouse.LeftDrag(
+    mouse.LeftDrag(
         myDrawingArea.TopLeft,
         myDrawingArea.BottomRight);
 
     // Make a copy of the drawing
-    Keyboard.KeyDown(Keys.LControlKey);
-    Keyboard.KeyTyping(Keys.C);
-    Keyboard.KeyTyping(Keys.V);
-    Keyboard.KeyUp(Keys.LControlKey);
-    Keyboard.KeyTyping(Keys.Escape);
+    keyboard.KeyDown(Keys.LControlKey);
+    keyboard.KeyTyping(Keys.C);
+    keyboard.KeyTyping(Keys.V);
+    keyboard.KeyUp(Keys.LControlKey);
+    keyboard.KeyTyping(Keys.Escape);
 
     // Find all the same drawings on Paint's window
     // (with 75% threshold by using default Pattern constructor)
     using (Pattern pattern = new Pattern(myDrawingArea.GetDisplayingImage()))
     {
-        List&lt;Match&gt; matches = area.FindAll(pattern);
+        List<Match> matches = area.FindAll(pattern);
         foreach (Match match in matches)
         {
             match.Highlight();
