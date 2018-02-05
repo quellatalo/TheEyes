@@ -144,7 +144,41 @@ namespace Qellatalo.Nin.TheEyes
             }
             return match;
         }
-
+        
+        /// <summary>
+        /// Waits for any of the provided paterns, returns when first is found
+        /// </summary>
+        /// <param name="pattern">Pattern to find.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(Pattern[] paterns, long timeoutMilliseconds)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            try
+            {
+                while (watch.ElapsedMilliseconds < timeoutMilliseconds)
+                {
+                    using (Bitmap display = GetDisplayingImage())
+                    {
+                        foreach (var pattern in paterns)
+                        {
+                            MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
+                            if (minMax.Max >= pattern.Threshold)
+                            {
+                                Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
+                                return new Match(ma, minMax.Max);
+                            }
+                        }
+                    }
+                }
+            }
+            finally 
+            {
+                watch.Stop();
+            }
+            return null;
+        }
+        
+        
         /// <summary>
         /// Finds all occurences of a pattern in th area.
         /// </summary>
