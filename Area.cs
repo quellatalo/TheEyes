@@ -34,6 +34,21 @@ namespace Qellatalo.Nin.TheEyes
         /// </summary>
         public static Color TransparencyKey { get { return TransparentForm.TransparentKey; } set { TransparentForm.TransparentKey = value; } }
 
+        /// <summary>
+        /// The wait time (milliseconds) for image matching in this area.
+        /// </summary>
+        public int WaitTimeMilliseconds { get; set; }
+
+        /// <summary>
+        /// Highlight color to use in this area.
+        /// </summary>
+        public Color HighlightColor { get; set; }
+
+        /// <summary>
+        /// Font for text highlighting in this area.
+        /// </summary>
+        public Font HighlightFont { get; set; }
+
         private Rectangle rectangle;
 
         /// <summary>
@@ -53,12 +68,19 @@ namespace Qellatalo.Nin.TheEyes
             }
         }
 
-        /// <summary>
-        /// Wait time.
-        /// </summary>
-        public long WaitTimeMilliseconds { get; set; } = DEFAULT_WAITTIME_MILLISECONDS;
-
         internal static TransparentForm highlightForm = new TransparentForm();
+
+        /// <summary>
+        /// Constructs a new Area.
+        /// </summary>
+        /// <param name="rectangle">Rectangle data.</param>
+        public Area(Rectangle rectangle)
+        {
+            Rectangle = rectangle;
+            WaitTimeMilliseconds = DEFAULT_WAITTIME_MILLISECONDS;
+            HighlightFont = DEFAULT_FONT;
+            HighlightColor = DEFAULT_HIGHLIGHT_COLOR;
+        }
 
         /// <summary>
         /// Constructs a new Area.
@@ -79,15 +101,6 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="width">Rectangle width.</param>
         /// <param name="height">Rectangle height.</param>
         public Area(int x, int y, int width, int height) : this(new Rectangle(x, y, width, height)) { }
-
-        /// <summary>
-        /// Constructs a new Area.
-        /// </summary>
-        /// <param name="rectangle">Rectangle data.</param>
-        public Area(Rectangle rectangle)
-        {
-            Rectangle = rectangle;
-        }
 
         /// <summary>
         /// Constructs a new Area.
@@ -144,41 +157,68 @@ namespace Qellatalo.Nin.TheEyes
             }
             return match;
         }
-        
+
         /// <summary>
-        /// Waits for any of the provided paterns, returns when first is found
+        /// Waits for any of the provided patterns, returns when first is found
         /// </summary>
-        /// <param name="pattern">Pattern to find.</param>
+        /// <param name="patterns">Patterns to find.</param>
+        /// <param name="timeoutMilliseconds">Timeout limit.</param>
         /// <returns>A Match.</returns>
-        public Match WaitAny(Pattern[] paterns, long timeoutMilliseconds)
+        public Match WaitAny(Pattern[] patterns, long timeoutMilliseconds)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            try
+            Match result = null;
+            var watch = Stopwatch.StartNew();
+            while (watch.ElapsedMilliseconds < timeoutMilliseconds && result == null)
             {
-                while (watch.ElapsedMilliseconds < timeoutMilliseconds)
+                using (Bitmap display = GetDisplayingImage())
                 {
-                    using (Bitmap display = GetDisplayingImage())
+                    foreach (var pattern in patterns)
                     {
-                        foreach (var pattern in paterns)
+                        MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
+                        if (minMax.Max >= pattern.Threshold)
                         {
-                            MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
-                            if (minMax.Max >= pattern.Threshold)
-                            {
-                                Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
-                                return new Match(ma, minMax.Max);
-                            }
+                            Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
+                            result = new Match(ma, minMax.Max);
+                            break;
                         }
                     }
                 }
             }
-            finally 
-            {
-                watch.Stop();
-            }
-            return null;
+            watch.Stop();
+            return result;
         }
-        
-        
+
+        /// <summary>
+        /// Waits for any of the provided patterns, returns when first is found
+        /// </summary>
+        /// <param name="patterns">Patterns to find.</param>
+        /// <param name="timeoutMilliseconds">Timeout limit.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(List<Pattern> patterns, long timeoutMilliseconds)
+        {
+            return WaitAny(patterns.ToArray(), timeoutMilliseconds);
+        }
+
+        /// <summary>
+        /// Waits for any of the provided patterns, returns when first is found
+        /// </summary>
+        /// <param name="patterns">Patterns to find.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(Pattern[] patterns)
+        {
+            return WaitAny(patterns, WaitTimeMilliseconds);
+        }
+
+        /// <summary>
+        /// Waits for any of the provided patterns, returns when first is found
+        /// </summary>
+        /// <param name="patterns">Patterns to find.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(List<Pattern> patterns)
+        {
+            return WaitAny(patterns.ToArray(), WaitTimeMilliseconds);
+        }
+
         /// <summary>
         /// Finds all occurences of a pattern in th area.
         /// </summary>
@@ -244,7 +284,7 @@ namespace Qellatalo.Nin.TheEyes
         /// </summary>
         public void Highlight()
         {
-            using (Pen p = new Pen(DEFAULT_HIGHLIGHT_COLOR))
+            using (Pen p = new Pen(HighlightColor))
             {
                 Highlight(p);
             }
@@ -256,7 +296,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="similarity"></param>
         public void Highlight(double similarity)
         {
-            Highlight(similarity, DEFAULT_HIGHLIGHT_COLOR);
+            Highlight(similarity, HighlightColor);
         }
 
         /// <summary>
@@ -298,9 +338,9 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="str">Caption</param>
         public void Caption(String str)
         {
-            using (SolidBrush brush = new SolidBrush(DEFAULT_HIGHLIGHT_COLOR))
+            using (SolidBrush brush = new SolidBrush(HighlightColor))
             {
-                Caption(str, DEFAULT_FONT, brush);
+                Caption(str, HighlightFont, brush);
             }
         }
 
@@ -311,7 +351,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="font">Font.</param>
         public void Caption(String str, Font font)
         {
-            using (SolidBrush brush = new SolidBrush(DEFAULT_HIGHLIGHT_COLOR))
+            using (SolidBrush brush = new SolidBrush(HighlightColor))
             {
                 Caption(str, font, brush);
             }
@@ -324,7 +364,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="brush">Brush.</param>
         public void Caption(String str, Brush brush)
         {
-            Caption(str, DEFAULT_FONT, brush);
+            Caption(str, HighlightFont, brush);
         }
 
         /// <summary>
@@ -352,7 +392,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <returns>A match if found, else null.</returns>
         public Match WaitFor(Pattern pattern, long timeoutMilliseconds)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
             Match result = null;
             while (watch.ElapsedMilliseconds < timeoutMilliseconds && result == null)
             {
