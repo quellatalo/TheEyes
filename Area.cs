@@ -153,27 +153,20 @@ namespace Qellatalo.Nin.TheEyes
         public Match WaitAny(Pattern[] paterns, long timeoutMilliseconds)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            try
+            while (watch.ElapsedMilliseconds < timeoutMilliseconds)
             {
-                while (watch.ElapsedMilliseconds < timeoutMilliseconds)
+                using (Bitmap display = GetDisplayingImage())
                 {
-                    using (Bitmap display = GetDisplayingImage())
+                    foreach (var pattern in paterns)
                     {
-                        foreach (var pattern in paterns)
+                        MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
+                        if (minMax.Max >= pattern.Threshold)
                         {
-                            MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
-                            if (minMax.Max >= pattern.Threshold)
-                            {
-                                Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
-                                return new Match(ma, minMax.Max);
-                            }
+                            Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
+                            return new Match(ma, minMax.Max);
                         }
                     }
                 }
-            }
-            finally 
-            {
-                watch.Stop();
             }
             return null;
         }
