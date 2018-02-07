@@ -184,7 +184,6 @@ namespace Qellatalo.Nin.TheEyes
                     }
                 }
             }
-            watch.Stop();
             return result;
         }
 
@@ -398,7 +397,6 @@ namespace Qellatalo.Nin.TheEyes
             {
                 result = Find(pattern);
             }
-            watch.Stop();
             return result;
         }
 
@@ -427,7 +425,6 @@ namespace Qellatalo.Nin.TheEyes
             {
                 result = FindAll(pattern);
             }
-            watch.Stop();
             return result;
         }
 
@@ -455,7 +452,6 @@ namespace Qellatalo.Nin.TheEyes
             {
                 match = Find(pattern);
             }
-            watch.Stop();
         }
 
         /// <summary>
