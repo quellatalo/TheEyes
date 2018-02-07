@@ -167,12 +167,12 @@ namespace Qellatalo.Nin.TheEyes
         public Match WaitAny(Pattern[] patterns, long timeoutMilliseconds)
         {
             Match result = null;
-            var watch = Stopwatch.StartNew();
+            Stopwatch watch = Stopwatch.StartNew();
             while (watch.ElapsedMilliseconds < timeoutMilliseconds && result == null)
             {
                 using (Bitmap display = GetDisplayingImage())
                 {
-                    foreach (var pattern in patterns)
+                    foreach (Pattern pattern in patterns)
                     {
                         MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
                         if (minMax.Max >= pattern.Threshold)
@@ -391,7 +391,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <returns>A match if found, else null.</returns>
         public Match WaitFor(Pattern pattern, long timeoutMilliseconds)
         {
-            var watch = Stopwatch.StartNew();
+            Stopwatch watch = Stopwatch.StartNew();
             Match result = null;
             while (watch.ElapsedMilliseconds < timeoutMilliseconds && result == null)
             {
