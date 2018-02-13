@@ -34,6 +34,8 @@ namespace Qellatalo.Nin.TheEyes
         /// </summary>
         public static Color TransparencyKey { get { return TransparentForm.TransparentKey; } set { TransparentForm.TransparentKey = value; } }
 
+        internal static TransparentForm highlightForm = new TransparentForm();
+
         /// <summary>
         /// The wait time (milliseconds) for image matching in this area.
         /// </summary>
@@ -48,6 +50,45 @@ namespace Qellatalo.Nin.TheEyes
         /// Font for text highlighting in this area.
         /// </summary>
         public Font HighlightFont { get; set; }
+
+        /// <summary>
+        /// Gets screen point from a point relative to the area's upper left.
+        /// </summary>
+        /// <param name="x">x relative to the area's upper left.</param>
+        /// <param name="y">y relative to the area's upper left.</param>
+        /// <returns>Point.</returns>
+        public Point Offset(int x, int y)
+        {
+            Point point = Point.Empty;
+            point.X = Rectangle.X + x;
+            point.Y = Rectangle.Y + y;
+            return point;
+        }
+
+        /// <summary>
+        /// Gets the area's center point.
+        /// </summary>
+        public Point Center { get; private set; }
+
+        /// <summary>
+        /// Gets the area's upper left point.
+        /// </summary>
+        public Point TopLeft { get; private set; }
+
+        /// <summary>
+        /// Gets the area's upper right point.
+        /// </summary>
+        public Point TopRight { get; private set; }
+
+        /// <summary>
+        /// Gets the area's bottom left point.
+        /// </summary>
+        public Point BottomLeft { get; private set; }
+
+        /// <summary>
+        /// Gets the area's bottom right point.
+        /// </summary>
+        public Point BottomRight { get; private set; }
 
         private Rectangle rectangle;
 
@@ -67,8 +108,6 @@ namespace Qellatalo.Nin.TheEyes
                 BottomRight = new Point(rectangle.Right, rectangle.Bottom);
             }
         }
-
-        internal static TransparentForm highlightForm = new TransparentForm();
 
         /// <summary>
         /// Constructs a new Area.
@@ -156,66 +195,6 @@ namespace Qellatalo.Nin.TheEyes
                 }
             }
             return match;
-        }
-
-        /// <summary>
-        /// Waits for any of the provided patterns, returns when first is found
-        /// </summary>
-        /// <param name="patterns">Patterns to find.</param>
-        /// <param name="timeoutMilliseconds">Timeout limit.</param>
-        /// <returns>A Match.</returns>
-        public Match WaitAny(Pattern[] patterns, long timeoutMilliseconds)
-        {
-            Match result = null;
-            Stopwatch watch = Stopwatch.StartNew();
-            while (watch.ElapsedMilliseconds < timeoutMilliseconds && result == null)
-            {
-                using (Bitmap display = GetDisplayingImage())
-                {
-                    foreach (Pattern pattern in patterns)
-                    {
-                        MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
-                        if (minMax.Max >= pattern.Threshold)
-                        {
-                            Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
-                            result = new Match(ma, minMax.Max);
-                            break;
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Waits for any of the provided patterns, returns when first is found
-        /// </summary>
-        /// <param name="patterns">Patterns to find.</param>
-        /// <param name="timeoutMilliseconds">Timeout limit.</param>
-        /// <returns>A Match.</returns>
-        public Match WaitAny(List<Pattern> patterns, long timeoutMilliseconds)
-        {
-            return WaitAny(patterns.ToArray(), timeoutMilliseconds);
-        }
-
-        /// <summary>
-        /// Waits for any of the provided patterns, returns when first is found
-        /// </summary>
-        /// <param name="patterns">Patterns to find.</param>
-        /// <returns>A Match.</returns>
-        public Match WaitAny(Pattern[] patterns)
-        {
-            return WaitAny(patterns, WaitTimeMilliseconds);
-        }
-
-        /// <summary>
-        /// Waits for any of the provided patterns, returns when first is found
-        /// </summary>
-        /// <param name="patterns">Patterns to find.</param>
-        /// <returns>A Match.</returns>
-        public Match WaitAny(List<Pattern> patterns)
-        {
-            return WaitAny(patterns.ToArray(), WaitTimeMilliseconds);
         }
 
         /// <summary>
@@ -411,7 +390,7 @@ namespace Qellatalo.Nin.TheEyes
         }
 
         /// <summary>
-        /// Waits for an amount òf occurences of a pattern.
+        /// Waits for an amount of occurences of a pattern.
         /// </summary>
         /// <param name="pattern">The pattern to wait for.</param>
         /// <param name="count">The occurences to wait for.</param>
@@ -464,42 +443,63 @@ namespace Qellatalo.Nin.TheEyes
         }
 
         /// <summary>
-        /// Gets screen point from a point relative to the area's upper left.
+        /// Waits for any of the provided patterns, returns when first is found
         /// </summary>
-        /// <param name="x">x relative to the area's upper left.</param>
-        /// <param name="y">y relative to the area's upper left.</param>
-        /// <returns>Point.</returns>
-        public Point Offset(int x, int y)
+        /// <param name="patterns">Patterns to find.</param>
+        /// <param name="timeoutMilliseconds">Timeout limit.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(Pattern[] patterns, long timeoutMilliseconds)
         {
-            Point point = Point.Empty;
-            point.X = Rectangle.X + x;
-            point.Y = Rectangle.Y + y;
-            return point;
+            Match result = null;
+            Stopwatch watch = Stopwatch.StartNew();
+            while (watch.ElapsedMilliseconds < timeoutMilliseconds && result == null)
+            {
+                using (Bitmap display = GetDisplayingImage())
+                {
+                    foreach (Pattern pattern in patterns)
+                    {
+                        MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
+                        if (minMax.Max >= pattern.Threshold)
+                        {
+                            Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
+                            result = new Match(ma, minMax.Max);
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         /// <summary>
-        /// Gets the area's center point.
+        /// Waits for any of the provided patterns, returns when first is found
         /// </summary>
-        public Point Center { get; private set; }
+        /// <param name="patterns">Patterns to find.</param>
+        /// <param name="timeoutMilliseconds">Timeout limit.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(List<Pattern> patterns, long timeoutMilliseconds)
+        {
+            return WaitAny(patterns.ToArray(), timeoutMilliseconds);
+        }
 
         /// <summary>
-        /// Gets the area's upper left point.
+        /// Waits for any of the provided patterns, returns when first is found
         /// </summary>
-        public Point TopLeft { get; private set; }
+        /// <param name="patterns">Patterns to find.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(Pattern[] patterns)
+        {
+            return WaitAny(patterns, WaitTimeMilliseconds);
+        }
 
         /// <summary>
-        /// Gets the area's upper right point.
+        /// Waits for any of the provided patterns, returns when first is found
         /// </summary>
-        public Point TopRight { get; private set; }
-
-        /// <summary>
-        /// Gets the area's bottom left point.
-        /// </summary>
-        public Point BottomLeft { get; private set; }
-
-        /// <summary>
-        /// Gets the area's bottom right point.
-        /// </summary>
-        public Point BottomRight { get; private set; }
+        /// <param name="patterns">Patterns to find.</param>
+        /// <returns>A Match.</returns>
+        public Match WaitAny(List<Pattern> patterns)
+        {
+            return WaitAny(patterns.ToArray(), WaitTimeMilliseconds);
+        }
     }
 }

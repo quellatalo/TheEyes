@@ -100,7 +100,7 @@ void HandsAndEyesTest()
 
 # Dependencies
 
-- [Emgu CV](www.emgu.com)
+- [Emgu CV](http://www.emgu.com/)
 
 
 License
