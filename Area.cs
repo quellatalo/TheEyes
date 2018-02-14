@@ -307,7 +307,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="brush">Brush</param>
         public void Caption(String str, Font font, Brush brush)
         {
-            highlightForm.Caption(this, str, font, brush);
+            highlightForm.Caption(TopLeft, str, font, brush);
         }
 
         /// <summary>

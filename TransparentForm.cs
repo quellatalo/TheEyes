@@ -31,14 +31,6 @@ namespace Qellatalo.Nin.TheEyes
             }
         }
 
-        //protected override void OnPaintBackground(PaintEventArgs e)
-        //{
-        //    if (!Visible)
-        //    {
-        //        base.OnPaintBackground(e);
-        //    }
-        //}
-
         internal void Clear()
         {
             Refresh();
@@ -80,13 +72,10 @@ namespace Qellatalo.Nin.TheEyes
             {
                 Visible = true;
             }
-            using(Bitmap display = area.GetDisplayingImage()) { 
-                g.DrawImage(display, area.Rectangle.Location);
-            }
             g.DrawRectangle(pen, area.Rectangle);
         }
 
-        internal void Caption(Area area, String str, Font font, Brush brush)
+        internal void Caption(Point location, String str, Font font, Brush brush)
         {
             if (InvokeRequired)
             {
@@ -99,11 +88,7 @@ namespace Qellatalo.Nin.TheEyes
             {
                 Visible = true;
             }
-            using (Bitmap display = area.GetDisplayingImage())
-            {
-                g.DrawImage(display, area.Rectangle.Location);
-            }
-            g.DrawString(str, font, brush, area.Rectangle.Location);
+            g.DrawString(str, font, brush, location);
         }
 
         internal void Highlight(Area area, Brush brush)
