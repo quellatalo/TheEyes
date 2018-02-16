@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace TheEyes.ImageMatcher
+namespace Quellatalo.Nin.TheEyes.ImageMatcher
 {
     /// <summary>
     /// Contains the values of a minmax search.

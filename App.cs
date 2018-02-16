@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace Qellatalo.Nin.TheEyes
+namespace Quellatalo.Nin.TheEyes
 {
     /// <summary>
     /// Represents a running application with an active window.

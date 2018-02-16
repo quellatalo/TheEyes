@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Qellatalo.Nin.TheEyes
+namespace Quellatalo.Nin.TheEyes
 {
     /// <summary>
     /// Represent a match in finding patterns.
@@ -11,7 +11,12 @@ namespace Qellatalo.Nin.TheEyes
         /// <summary>
         /// The area of the match.
         /// </summary>
+        [Obsolete("Area property for Match will be removed in future releases. Please use Rectangle instead.")]
         public Area Area { get; private set; }
+        /// <summary>
+        /// The rectangle of the match.
+        /// </summary>
+        public Rectangle Rectangle { get; set; }
         /// <summary>
         /// Match similarity.
         /// </summary>
@@ -19,24 +24,44 @@ namespace Qellatalo.Nin.TheEyes
         /// <summary>
         /// Constructs a match object.
         /// </summary>
-        /// <param name="area"></param>
-        /// <param name="similarity"></param>
+        /// <param name="area">The area of the match.</param>
+        /// <param name="similarity">Match similarity.</param>
+        [Obsolete("Area property for Match will be removed in future releases. Please use Rectangle instead.")]
         public Match(Area area, double similarity)
         {
             Area = area;
             Similarity = similarity;
         }
         /// <summary>
+        /// Constructs a match object.
+        /// </summary>
+        /// <param name="rectangle">The rectangle of the match.</param>
+        /// <param name="similarity">Match similarity.</param>
+        public Match(Rectangle rectangle, double similarity)
+        {
+            Rectangle = rectangle;
+            Similarity = similarity;
+        }
+        /// <summary>
         /// Highlight matching area based on similarity.
         /// </summary>
+        [Obsolete("Match highlight will be removed in future releases. Please highlight from Area instead.")]
         public void Highlight()
         {
-            Area.Highlight(Similarity);
+            if (Area == null)
+            {
+                
+            }
+            else
+            {
+                Area.Highlight(Similarity);
+            }
         }
         /// <summary>
         /// Highlight matching area based on similarity.
         /// </summary>
         /// <param name="color">Brush color.</param>
+        [Obsolete("Match highlight will be removed in future releases. Please highlight from Area instead.")]
         public void Highlight(Color color)
         {
             Area.Highlight(Similarity, color);
@@ -44,6 +69,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <summary>
         /// Caption the match area with similarity.
         /// </summary>
+        [Obsolete("Match caption will be removed in future releases. Please caption from Area instead.")]
         public void Caption()
         {
             Area.Caption(Similarity.ToString());

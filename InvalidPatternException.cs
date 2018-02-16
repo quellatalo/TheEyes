@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Qellatalo.Nin.TheEyes
+namespace Quellatalo.Nin.TheEyes
 {
     /// <summary>
     /// The exception that is thrown when an ineffective Pattern is processed on an image scan.

@@ -1,13 +1,12 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
+﻿using Quellatalo.Nin.TheEyes.ImageMatcher;
+using Quellatalo.Nin.TheEyes.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using TheEyes.ImageMatcher;
 
-namespace Qellatalo.Nin.TheEyes
+namespace Quellatalo.Nin.TheEyes
 {
     /// <summary>
     /// Represents an area on screen.
@@ -63,6 +62,16 @@ namespace Qellatalo.Nin.TheEyes
             point.X = Rectangle.X + x;
             point.Y = Rectangle.Y + y;
             return point;
+        }
+
+        /// <summary>
+        /// Gets screen point from a point relative to the area's upper left.
+        /// </summary>
+        /// <param name="point">Offset point.</param>
+        /// <returns>Point.</returns>
+        public Point Offset(Point point)
+        {
+            return Offset(point.X,point.Y);
         }
 
         /// <summary>
@@ -178,23 +187,26 @@ namespace Qellatalo.Nin.TheEyes
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rectangle"></param>
+        /// <returns></returns>
+        public Area SubArea(Rectangle rectangle)
+        {
+            return new Area(Offset(rectangle.Location), rectangle.Size);
+        }
+
+        /// <summary>
         /// Finds a pattern in th area.
         /// </summary>
         /// <param name="pattern">Pattern to find.</param>
         /// <returns>A Match object, or null if not found.</returns>
         public Match Find(Pattern pattern)
         {
-            Match match = null;
             using (Bitmap display = GetDisplayingImage())
             {
-                MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
-                if (minMax.Max >= pattern.Threshold)
-                {
-                    Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
-                    match = new Match(ma, minMax.Max);
-                }
+                return GraphicX.Instance.Find(display, pattern);
             }
-            return match;
         }
 
         /// <summary>
@@ -204,57 +216,10 @@ namespace Qellatalo.Nin.TheEyes
         /// <returns>A list of Match.</returns>
         public List<Match> FindAll(Pattern pattern)
         {
-            List<Match> result = new List<Match>();
             using (Bitmap display = GetDisplayingImage())
-            using
-                (
-                Image<Bgr, byte> reg = new Image<Bgr, byte>(display),
-                image = new Image<Bgr, byte>(pattern.Image)
-                )
             {
-                MinMax gMinMax = pattern.Matcher.GetMinMax(reg, image);
-                Image<Bgr, byte> different;
-                if (gMinMax.Min < pattern.Threshold)
-                {
-                    different = reg.GetSubRect(new Rectangle(gMinMax.MinLoc.X, gMinMax.MinLoc.Y, image.Size.Width, image.Size.Height)).Copy();
-                }
-                else
-                {
-                    Point[] pts =
-                    {
-                        Point.Empty,
-                        new Point(0, image.Width),
-                        new Point(image.Width, image.Height),
-                        new Point(image.Height, 0)
-                    };
-                    different = new Image<Bgr, byte>(image.Size);
-                    Bgr fillColor1 = new Bgr(Color.White);
-                    different.FillConvexPoly(pts, fillColor1);
-                    MinMax iMinMax = pattern.Matcher.GetMinMax(different, image);
-                    if (iMinMax.Max >= pattern.Threshold)
-                    {
-                        Point[] ulPts = { pts[0], pts[1], pts[3] };
-                        different.FillConvexPoly(ulPts, fillColor1);
-                        Point[] brPts = { pts[1], pts[2], pts[3] };
-                        different.FillConvexPoly(brPts, new Bgr(Color.Black));
-                        iMinMax = pattern.Matcher.GetMinMax(different, image);
-                        if (iMinMax.Max >= pattern.Threshold)
-                        {
-                            throw new InvalidPatternException("Invalid pattern image.");
-                        }
-                    }
-                }
-                while (gMinMax.Max >= pattern.Threshold)
-                {
-                    Area ma = new Area(Rectangle.X + gMinMax.MaxLoc.X, Rectangle.Y + gMinMax.MaxLoc.Y, image.Size);
-                    Match match = new Match(ma, gMinMax.Max);
-                    result.Add(match);
-                    different.CopyTo(reg.GetSubRect(new Rectangle(gMinMax.MaxLoc, different.Size)));
-                    gMinMax = pattern.Matcher.GetMinMax(reg, image);
-                }
-                different.Dispose();
+                return GraphicX.Instance.FindAll(display, pattern);
             }
-            return result;
         }
 
         /// <summary>
@@ -461,8 +426,8 @@ namespace Qellatalo.Nin.TheEyes
                         MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
                         if (minMax.Max >= pattern.Threshold)
                         {
-                            Area ma = new Area(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size);
-                            result = new Match(ma, minMax.Max);
+                            Rectangle rec = new Rectangle(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size.Width, pattern.Image.Size.Height);
+                            result = new Match(rec, minMax.Max);
                             break;
                         }
                     }

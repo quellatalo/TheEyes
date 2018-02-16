@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Quellatalo.Nin.TheEyes.Imaging;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Qellatalo.Nin.TheEyes
+namespace Quellatalo.Nin.TheEyes
 {
     internal class TransparentForm : Form
     {
@@ -72,7 +73,7 @@ namespace Qellatalo.Nin.TheEyes
             {
                 Visible = true;
             }
-            g.DrawRectangle(pen, area.Rectangle);
+            GraphicX.Instance.Highlight(g, area.Rectangle, pen);
         }
 
         internal void Caption(Point location, String str, Font font, Brush brush)
@@ -88,7 +89,7 @@ namespace Qellatalo.Nin.TheEyes
             {
                 Visible = true;
             }
-            g.DrawString(str, font, brush, location);
+            GraphicX.Instance.Caption(g, location, str, font, brush);
         }
 
         internal void Highlight(Area area, Brush brush)
@@ -108,7 +109,7 @@ namespace Qellatalo.Nin.TheEyes
             {
                 g.DrawImage(display, area.Rectangle.Location);
             }
-            g.FillRectangle(brush, area.Rectangle);
+            GraphicX.Instance.Highlight(g, area.Rectangle, brush);
         }
 
         protected override void OnClick(EventArgs e)

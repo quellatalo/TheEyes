@@ -26,74 +26,77 @@ void HandsAndEyesTest()
     App app = App.GetAppByWindowTitle("paint");
     app.ToFront();
 
-    // Highlight the Paint's window area
-    Area area = new Area(app.GetMainWindowRectangle());
-    area.Highlight(new SolidBrush(Color.FromArgb(63, Color.Red)));
-    Thread.Sleep(2222); // wait, just to observer
-    Area.ClearHighlight(); // clear the highlight
-
-    // Prepare some points to draw in sequence
-    Point[] points1 = new Point[] // 1st stroke
+    using (Brush brush = new SolidBrush(Color.FromArgb(63, Color.Red)))
     {
+        // Highlight the Paint's window area
+        Area area = new Area(app.GetMainWindowRectangle());
+        area.Highlight(brush);
+        Thread.Sleep(2222); // wait, just to observer
+        Area.ClearHighlight(); // clear the highlight
+
+        // Prepare some points to draw in sequence
+        Point[] points1 = new Point[] // 1st stroke
+        {
         new Point(area.Center.X-10,area.Center.Y-10),
         new Point(area.Center.X+10,area.Center.Y-10),
         new Point(area.Center.X+10,area.Center.Y+10),
         new Point(area.Center.X-10,area.Center.Y+10)
-    };
-    Point[] points2 = new Point[] // 2nd stroke
-    {
+        };
+        Point[] points2 = new Point[] // 2nd stroke
+        {
         new Point(area.Center.X-14,area.Center.Y-14),
         new Point(area.Center.X+14,area.Center.Y-14),
         new Point(area.Center.X+14,area.Center.Y+14),
         new Point(area.Center.X-14,area.Center.Y+14)
-    };
+        };
 
-    MouseHandler mouse = new MouseHandler();
-    KeyboardHandler keyboard = new KeyboardHandler();
+        MouseHandler mouse = new MouseHandler();
+        KeyboardHandler keyboard = new KeyboardHandler();
 
-    mouse.DefaultMouseActionDelay = 111; // set some delay after each mouse action, it's easier to observe
+        mouse.DefaultMouseActionDelay = 111; // set some delay after each mouse action, it's easier to observe
 
-    // Draw on Paint's canvas
-    mouse.LeftDrag(points1);
-    mouse.LeftDrag(points2);
+        // Draw on Paint's canvas
+        mouse.LeftDrag(points1);
+        mouse.LeftDrag(points2);
 
-    keyboard.DefaultKeyboardActionDelay = 41; // set some delay after each keyboard action
+        keyboard.DefaultKeyboardActionDelay = 41; // set some delay after each keyboard action
 
-    // Switch to Paint's select mode
-    keyboard.KeyDown(Keys.LControlKey);
-    keyboard.KeyTyping(Keys.A);
-    keyboard.KeyUp(Keys.LControlKey);
-    keyboard.KeyTyping(Keys.Escape);
+        // Switch to Paint's select mode
+        keyboard.KeyDown(Keys.LControlKey);
+        keyboard.KeyTyping(Keys.A);
+        keyboard.KeyUp(Keys.LControlKey);
+        keyboard.KeyTyping(Keys.Escape);
 
-    // The drawing's area
-    Area myDrawingArea = new Area(
-        new Rectangle(
-            new Point(area.Center.X - 16, area.Center.Y - 16),
-            new Size(32, 32)));
+        // The drawing's area
+        Area myDrawingArea = new Area(
+            new Rectangle(
+                new Point(area.Center.X - 16, area.Center.Y - 16),
+                new Size(32, 32)));
 
-    // In Paint, select the drawing
-    mouse.LeftDrag(
-        myDrawingArea.TopLeft,
-        myDrawingArea.BottomRight);
+        // In Paint, select the drawing
+        mouse.LeftDrag(
+            myDrawingArea.TopLeft,
+            myDrawingArea.BottomRight);
 
-    // Make a copy of the drawing
-    keyboard.KeyDown(Keys.LControlKey);
-    keyboard.KeyTyping(Keys.C);
-    keyboard.KeyTyping(Keys.V);
-    keyboard.KeyUp(Keys.LControlKey);
-    keyboard.KeyTyping(Keys.Escape);
+        // Make a copy of the drawing
+        keyboard.KeyDown(Keys.LControlKey);
+        keyboard.KeyTyping(Keys.C);
+        keyboard.KeyTyping(Keys.V);
+        keyboard.KeyUp(Keys.LControlKey);
+        keyboard.KeyTyping(Keys.Escape);
 
-    // Find all the same drawings on Paint's window
-    // (with 75% threshold by using default Pattern constructor)
-    using (Pattern pattern = new Pattern(myDrawingArea.GetDisplayingImage()))
-    {
-        List<Match> matches = area.FindAll(pattern);
-        foreach (Match match in matches)
+        // Find all the same drawings on Paint's window
+        // (with 75% threshold by using default Pattern constructor)
+        using (Pattern pattern = new Pattern(myDrawingArea.GetDisplayingImage()))
         {
-            match.Highlight();
+            List<Match> matches = area.FindAll(pattern);
+            foreach (Match match in matches)
+            {
+                area.SubArea(match.Rectangle).Highlight(brush);
+            }
+            Thread.Sleep(2222);
+            Area.ClearHighlight();
         }
-        Thread.Sleep(2222);
-        Area.ClearHighlight();
     }
 }
 ```

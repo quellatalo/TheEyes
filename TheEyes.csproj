@@ -7,7 +7,7 @@
     <ProjectGuid>{CE89532B-F108-49FD-B920-D2B2A5C06AE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TheEyes</RootNamespace>
+    <RootNamespace>Quellatalo.Nin.TheEyes</RootNamespace>
     <AssemblyName>TheEyes</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Area.cs" />
+    <Compile Include="Imaging\GraphicX.cs" />
     <Compile Include="ImageMatcher\CcoeffNormed.cs" />
     <Compile Include="ImageMatcher\ImageMatcher.cs" />
     <Compile Include="InvalidPatternException.cs" />

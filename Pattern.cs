@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Quellatalo.Nin.TheEyes.ImageMatcher;
+using System;
 using System.Drawing;
-using TheEyes.ImageMatcher;
 
-namespace Qellatalo.Nin.TheEyes
+namespace Quellatalo.Nin.TheEyes
 {
     /// <summary>
     /// Represents an image pattern.
@@ -16,7 +16,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <summary>
         /// Matching mediator.
         /// </summary>
-        public ImageMatcher Matcher { get; set; }
+        public ImageMatcher.ImageMatcher Matcher { get; set; }
         /// <summary>
         /// Base image.
         /// </summary>
@@ -31,7 +31,7 @@ namespace Qellatalo.Nin.TheEyes
         /// <param name="bitmap">Base image.</param>
         /// <param name="threshold">Similarity threshold.</param>
         /// <param name="imageMatcher">Matching method.</param>
-        public Pattern(Bitmap bitmap, double threshold, ImageMatcher imageMatcher)
+        public Pattern(Bitmap bitmap, double threshold, ImageMatcher.ImageMatcher imageMatcher)
         {
             Image = bitmap;
             Threshold = threshold;
@@ -42,13 +42,13 @@ namespace Qellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="filename">Base image file path.</param>
         /// <param name="imageMatcher">Matching method.</param>
-        public Pattern(string filename, ImageMatcher imageMatcher) : this(new Bitmap(filename), imageMatcher) { }
+        public Pattern(string filename, ImageMatcher.ImageMatcher imageMatcher) : this(new Bitmap(filename), imageMatcher) { }
         /// <summary>
         /// Constructs a pattern.
         /// </summary>
         /// <param name="bitmap">Base image.</param>
         /// <param name="imageMatcher">Matching method.</param>
-        public Pattern(Bitmap bitmap, ImageMatcher imageMatcher) : this(bitmap, DefaultThreshold, imageMatcher) { }
+        public Pattern(Bitmap bitmap, ImageMatcher.ImageMatcher imageMatcher) : this(bitmap, DefaultThreshold, imageMatcher) { }
         /// <summary>
         /// Constructs a pattern.
         /// </summary>
