@@ -71,7 +71,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <returns>Point.</returns>
         public Point Offset(Point point)
         {
-            return Offset(point.X,point.Y);
+            return Offset(point.X, point.Y);
         }
 
         /// <summary>
@@ -187,13 +187,61 @@ namespace Quellatalo.Nin.TheEyes
         }
 
         /// <summary>
-        /// 
+        /// Gets an area relative to current area's location.
         /// </summary>
         /// <param name="rectangle"></param>
         /// <returns></returns>
         public Area SubArea(Rectangle rectangle)
         {
             return new Area(Offset(rectangle.Location), rectangle.Size);
+        }
+
+        /// <summary>
+        /// Gets an area relative to current area's location.
+        /// </summary>
+        /// <param name="x">X offset.</param>
+        /// <param name="y">Y offset.</param>
+        /// <param name="width">Width of the sub-area.</param>
+        /// <param name="height">Width of the sub-area.</param>
+        /// <returns></returns>
+        public Area SubArea(int x, int y, int width, int height)
+        {
+            return new Area(Offset(x, y), width, height);
+        }
+
+        /// <summary>
+        /// Gets an area relative to current area's location.
+        /// </summary>
+        /// <param name="point">Offset point.</param>
+        /// <param name="width">Width of the sub-area.</param>
+        /// <param name="height">Width of the sub-area.</param>
+        /// <returns></returns>
+        public Area SubArea(Point point, int width, int height)
+        {
+            return new Area(Offset(point), width, height);
+        }
+
+        /// <summary>
+        /// Gets an area relative to current area's location.
+        /// </summary>
+        /// <param name="x">X offset.</param>
+        /// <param name="y">Y offset.</param>
+        /// <param name="size">Size of the sub-area.</param>
+        /// <returns></returns>
+        public Area SubArea(int x, int y, Size size)
+        {
+            return new Area(Offset(x, y), size);
+        }
+
+        /// <summary>
+        /// Gets an area relative to current area's location.
+        /// </summary>
+        /// <param name="point">Offset point.</param>
+        /// <param name="size">Size of the sub-area.</param>
+        /// <returns></returns>
+        public Area SubArea(Point point, Size size)
+        {
+            return new Area(Offset(point), size);
         }
 
         /// <summary>
