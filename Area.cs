@@ -187,23 +187,23 @@ namespace Quellatalo.Nin.TheEyes
         }
 
         /// <summary>
-        /// Gets an area relative to current area's location.
+        /// Manages an area relative to current area's location.
         /// </summary>
-        /// <param name="rectangle"></param>
-        /// <returns></returns>
+        /// <param name="rectangle">The rectangle of the sub-area.</param>
+        /// <returns>Area.</returns>
         public Area SubArea(Rectangle rectangle)
         {
             return new Area(Offset(rectangle.Location), rectangle.Size);
         }
 
         /// <summary>
-        /// Gets an area relative to current area's location.
+        /// Manages an area relative to current area's location.
         /// </summary>
         /// <param name="x">X offset.</param>
         /// <param name="y">Y offset.</param>
         /// <param name="width">Width of the sub-area.</param>
         /// <param name="height">Width of the sub-area.</param>
-        /// <returns></returns>
+        /// <returns>Area.</returns>
         public Area SubArea(int x, int y, int width, int height)
         {
             return new Area(Offset(x, y), width, height);
@@ -215,33 +215,101 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="point">Offset point.</param>
         /// <param name="width">Width of the sub-area.</param>
         /// <param name="height">Width of the sub-area.</param>
-        /// <returns></returns>
+        /// <returns>Area.</returns>
         public Area SubArea(Point point, int width, int height)
         {
             return new Area(Offset(point), width, height);
         }
 
         /// <summary>
-        /// Gets an area relative to current area's location.
+        /// Manages an area relative to current area's location.
         /// </summary>
         /// <param name="x">X offset.</param>
         /// <param name="y">Y offset.</param>
         /// <param name="size">Size of the sub-area.</param>
-        /// <returns></returns>
+        /// <returns>Area.</returns>
         public Area SubArea(int x, int y, Size size)
         {
             return new Area(Offset(x, y), size);
         }
 
         /// <summary>
-        /// Gets an area relative to current area's location.
+        /// Manages an area relative to current area's location.
         /// </summary>
         /// <param name="point">Offset point.</param>
         /// <param name="size">Size of the sub-area.</param>
-        /// <returns></returns>
+        /// <returns>Area.</returns>
         public Area SubArea(Point point, Size size)
         {
             return new Area(Offset(point), size);
+        }
+
+        /// <summary>
+        /// Manages the area on the right side of this area.
+        /// </summary>
+        /// <param name="distance">The distance of the new area to the current one.</param>
+        /// <param name="width">The width of the new area. 0 means maximum (until the edge).</param>
+        /// <returns>Area.</returns>
+        public Area RightArea(int distance = 0, int width = 0)
+        {
+            return new Area
+            (
+                TopRight.X + distance,
+                TopRight.Y,
+                width == 0 ? SystemInformation.VirtualScreen.Size.Width - TopRight.X : width,
+                rectangle.Height
+            );
+        }
+
+        /// <summary>
+        /// Manages the area on the left side of this area.
+        /// </summary>
+        /// <param name="distance">The distance of the new area to the current one.</param>
+        /// <param name="width">The width of the new area. 0 means maximum (until the edge).</param>
+        /// <returns>Area.</returns>
+        public Area LeftArea(int distance = 0, int width = 0)
+        {
+            return new Area
+            (
+                width == 0 ? SystemInformation.VirtualScreen.X : rectangle.X - distance - width,
+                rectangle.Y,
+                rectangle.X - distance,
+                rectangle.Height
+            );
+        }
+
+        /// <summary>
+        /// Manages the area on top of this area.
+        /// </summary>
+        /// <param name="distance">The distance of the new area to the current one.</param>
+        /// <param name="height">The height of the new area. 0 means maximum (until the edge).</param>
+        /// <returns>Area.</returns>
+        public Area TopArea(int distance = 0, int height = 0)
+        {
+            return new Area
+            (
+                Rectangle.X,
+                height == 0 ? SystemInformation.VirtualScreen.Y : rectangle.Y - distance - height,
+                rectangle.Width,
+                rectangle.Y - distance
+            );
+        }
+
+        /// <summary>
+        /// Manages the area at the bottom of this area.
+        /// </summary>
+        /// <param name="distance">The distance of the new area to the current one.</param>
+        /// <param name="height">The height of the new area. 0 means maximum (until the edge).</param>
+        /// <returns>Area.</returns>
+        public Area BottomArea(int distance = 0, int height = 0)
+        {
+            return new Area
+            (
+                BottomLeft.X,
+                BottomLeft.Y + distance,
+                rectangle.Width,
+                height == 0 ? SystemInformation.VirtualScreen.Size.Height - BottomLeft.Y : height
+            );
         }
 
         /// <summary>

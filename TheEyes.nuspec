@@ -12,6 +12,7 @@
     <releaseNotes>
 + Remove obsolete items.
 + Add some overloads for SubArea method.
++ Add Top/Left/Right/BottomArea methods in Area.
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>sikuli sikulix macro automation screen image picture finding searching reading rpa</tags>
