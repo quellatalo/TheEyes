@@ -32,6 +32,20 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// <returns>A Match object, or null if not found.</returns>
         public Match Find(Bitmap image, Pattern pattern)
         {
+            using (Image<Bgr,byte> img = new Image<Bgr, byte>(image))
+            {
+                return Find(img, pattern);
+            }
+        }
+
+        /// <summary>
+        /// Finds a pattern in an image.
+        /// </summary>
+        /// <param name="image">Image to find in.</param>
+        /// <param name="pattern">Pattern to find.</param>
+        /// <returns>A Match object, or null if not found.</returns>
+        public Match Find(Image<Bgr,byte> image, Pattern pattern)
+        {
             Match match = null;
             MinMax minMax = pattern.Matcher.GetMinMax(image, pattern.Image);
             if (minMax.Max >= pattern.Threshold)

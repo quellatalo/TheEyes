@@ -10,9 +10,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This TheEyes library provides methods to read and find images on the screen. A part of alternative tools to sikulix.</description>
     <releaseNotes>
-+ Remove obsolete items.
-+ Add some overloads for SubArea method.
-+ Add Top/Left/Right/BottomArea methods in Area.
+0.2.1.0
++ Removed obsolete items.
++ Added some overloads for SubArea method.
++ Added Top/Left/Right/BottomArea methods in Area.
++ Added an overload for GraphicX's Find method.
++ Improved App.ToFront's restore from minimized issue.
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>sikuli sikulix macro automation screen image picture finding searching reading rpa</tags>

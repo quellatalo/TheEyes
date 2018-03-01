@@ -78,7 +78,7 @@ namespace Quellatalo.Nin.TheEyes
         public void ToFront()
         {
             // restore if minimized
-            ShowWindow(Process.MainWindowHandle, 9);
+            ShowWindow(Process.MainWindowHandle, 0x09);
             SetForegroundWindow(Process.MainWindowHandle);
             SetForegroundWindow(Area.highlightForm.Handle);
         }
