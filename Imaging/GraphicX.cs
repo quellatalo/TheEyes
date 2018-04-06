@@ -1,5 +1,7 @@
 ﻿using Emgu.CV;
+using Emgu.CV.OCR;
 using Emgu.CV.Structure;
+using Quellatalo.Nin.HOCRReader;
 using Quellatalo.Nin.TheEyes.ImageMatcher;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// <returns>A Match object, or null if not found.</returns>
         public Match Find(Bitmap image, Pattern pattern)
         {
-            using (Image<Bgr,byte> img = new Image<Bgr, byte>(image))
+            using (Image<Bgr, byte> img = new Image<Bgr, byte>(image))
             {
                 return Find(img, pattern);
             }
@@ -44,7 +46,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// <param name="image">Image to find in.</param>
         /// <param name="pattern">Pattern to find.</param>
         /// <returns>A Match object, or null if not found.</returns>
-        public Match Find(Image<Bgr,byte> image, Pattern pattern)
+        public Match Find(Image<Bgr, byte> image, Pattern pattern)
         {
             Match match = null;
             MinMax minMax = pattern.Matcher.GetMinMax(image, pattern.Image);
@@ -158,6 +160,70 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         public void Caption(Graphics g, Point loc, String str, Font font, Brush brush)
         {
             g.DrawString(str, font, brush, loc);
+        }
+        /// <summary>
+        /// Find all lines which contains/match a specified text.
+        /// </summary>
+        /// <param name="text">The text to find.</param>
+        /// /// <param name="image">The image to find in.</param>
+        /// /// <param name="tesseract">The tesseract instance.</param>
+        /// <param name="searchOption">Whether the line contains the text, or match the text.</param>
+        /// <returns>A list of OCRLine.</returns>
+        public List<OCRLine> FindAllText(string text, Image<Bgr, byte> image, Tesseract tesseract, SearchOptions searchOption = SearchOptions.Containing)
+        {
+            tesseract.SetImage(image);
+            HOCR hOCR = new HOCR()
+            {
+                Data = tesseract.GetHOCRText()
+            };
+            return hOCR.FindAllText(text);
+        }
+        /// <summary>
+        /// Find all lines which contains/match a specified text.
+        /// </summary>
+        /// <param name="text">The text to find.</param>
+        /// /// <param name="image">The image to find in.</param>
+        /// /// <param name="tesseract">The tesseract instance.</param>
+        /// <param name="searchOption">Whether the line contains the text, or match the text.</param>
+        /// <returns>A list of OCRLine.</returns>
+        public List<OCRLine> FindAllText(string text, Bitmap image, Tesseract tesseract, SearchOptions searchOption = SearchOptions.Containing)
+        {
+            using (Image<Bgr, byte> img = new Image<Bgr, byte>(image))
+            {
+                return FindAllText(text, img, tesseract, searchOption);
+            }
+        }
+        /// <summary>
+        /// Find the first line which contains/match a specified text.
+        /// </summary>
+        /// <param name="text">The text to find.</param>
+        /// /// <param name="image">The image to find in.</param>
+        /// /// <param name="tesseract">The tesseract instance.</param>
+        /// <param name="searchOption">Whether the line contains the text, or match the text.</param>
+        /// <returns>An instance of OCRLine.</returns>
+        public OCRLine FindText(string text, Image<Bgr, byte> image, Tesseract tesseract, SearchOptions searchOption = SearchOptions.Containing)
+        {
+            tesseract.SetImage(image);
+            HOCR hOCR = new HOCR()
+            {
+                Data = tesseract.GetHOCRText()
+            };
+            return hOCR.FindText(text);
+        }
+        /// <summary>
+        /// Find the first line which contains/match a specified text.
+        /// </summary>
+        /// <param name="text">The text to find.</param>
+        /// /// <param name="image">The image to find in.</param>
+        /// /// <param name="tesseract">The tesseract instance.</param>
+        /// <param name="searchOption">Whether the line contains the text, or match the text.</param>
+        /// <returns>An instance of OCRLine.</returns>
+        public OCRLine FindText(string text, Bitmap image, Tesseract tesseract, SearchOptions searchOption = SearchOptions.Containing)
+        {
+            using (Image<Bgr, byte> img = new Image<Bgr, byte>(image))
+            {
+                return FindText(text, img, tesseract, searchOption);
+            }
         }
     }
 }
