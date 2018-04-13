@@ -161,6 +161,35 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         {
             g.DrawString(str, font, brush, loc);
         }
+
+        /// <summary>
+        /// Gets image HOCR from tesseract.
+        /// </summary>
+        /// <param name="image">The image to read.</param>
+        /// <param name="tesseract">The tesseract instance.</param>
+        /// <returns>HOCR instance.</returns>
+        public HOCR GetHOCR(Image<Bgr, byte> image, Tesseract tesseract)
+        {
+            tesseract.SetImage(image);
+            HOCR hOCR = new HOCR()
+            {
+                Data = tesseract.GetHOCRText()
+            };
+            return hOCR;
+        }
+        /// <summary>
+        /// Gets image HOCR from tesseract.
+        /// </summary>
+        /// <param name="image">The image to read.</param>
+        /// <param name="tesseract">The tesseract instance.</param>
+        /// <returns>HOCR instance.</returns>
+        public HOCR GetHOCR(Bitmap image, Tesseract tesseract)
+        {
+            using (Image<Bgr, byte> img = new Image<Bgr, byte>(image))
+            {
+                return GetHOCR(img, tesseract);
+            }
+        }
         /// <summary>
         /// Find all lines which contains/match a specified text.
         /// </summary>

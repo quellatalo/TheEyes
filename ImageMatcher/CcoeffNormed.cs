@@ -36,7 +36,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         public override MinMax GetMinMax(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg)
         {
             MinMax minMax = new MinMax();
-            contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed).Mat.MinMax(out double[] min, out double[] max, out Point[] minLoc, out Point[] maxLoc);
+            contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed).MinMax(out double[] min, out double[] max, out Point[] minLoc, out Point[] maxLoc);
             minMax.Min = min[0];
             minMax.Max = max[0];
             minMax.MinLoc = minLoc[0];
