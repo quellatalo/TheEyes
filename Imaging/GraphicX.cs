@@ -80,52 +80,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// <returns>A list of Match.</returns>
         public List<Match> FindAll(Image<Bgr, byte> image, Pattern pattern)
         {
-            List<Match> result = new List<Match>();
-            using (Image<Bgr, byte> img = new Image<Bgr, byte>(pattern.Image))
-            {
-                MinMax gMinMax = pattern.Matcher.GetMinMax(image, img);
-                Image<Bgr, byte> different;
-                if (gMinMax.Min < pattern.Threshold)
-                {
-                    different = image.GetSubRect(new Rectangle(gMinMax.MinLoc.X, gMinMax.MinLoc.Y, img.Size.Width, img.Size.Height)).Copy();
-                }
-                else
-                {
-                    Point[] pts =
-                    {
-                        Point.Empty,
-                        new Point(0, img.Width),
-                        new Point(img.Width, img.Height),
-                        new Point(img.Height, 0)
-                    };
-                    different = new Image<Bgr, byte>(img.Size);
-                    Bgr fillColor1 = new Bgr(Color.White);
-                    different.FillConvexPoly(pts, fillColor1);
-                    MinMax iMinMax = pattern.Matcher.GetMinMax(different, img);
-                    if (iMinMax.Max >= pattern.Threshold)
-                    {
-                        Point[] ulPts = { pts[0], pts[1], pts[3] };
-                        different.FillConvexPoly(ulPts, fillColor1);
-                        Point[] brPts = { pts[1], pts[2], pts[3] };
-                        different.FillConvexPoly(brPts, new Bgr(Color.Black));
-                        iMinMax = pattern.Matcher.GetMinMax(different, img);
-                        if (iMinMax.Max >= pattern.Threshold)
-                        {
-                            throw new InvalidPatternException("Invalid pattern image.");
-                        }
-                    }
-                }
-                while (gMinMax.Max >= pattern.Threshold)
-                {
-                    Rectangle ma = new Rectangle(gMinMax.MaxLoc.X, gMinMax.MaxLoc.Y, img.Size.Width, img.Size.Height);
-                    Match match = new Match(ma, gMinMax.Max);
-                    result.Add(match);
-                    different.CopyTo(image.GetSubRect(new Rectangle(gMinMax.MaxLoc, different.Size)));
-                    gMinMax = pattern.Matcher.GetMinMax(image, img);
-                }
-                different.Dispose();
-            }
-            return result;
+            return pattern.Matcher.GetMatches(image, pattern.Image, pattern.Threshold);
         }
         /// <summary>
         /// Highlight a rectangle in provided graphics.
