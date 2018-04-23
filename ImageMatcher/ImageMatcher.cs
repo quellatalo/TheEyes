@@ -69,6 +69,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
+        /// <param name="threshold">Similarity threshold.</param>
         /// <returns>A MinMax object.</returns>
         public List<Match> GetMatches(Bitmap contextImg, Bitmap searchImg, double threshold)
         {
@@ -87,6 +88,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
+        /// <param name="threshold">Similarity threshold.</param>
         /// <returns>A MinMax object.</returns>
         public List<Match> GetMatches(Image<Bgr, byte> contextImg, Bitmap searchImg, double threshold)
         {
@@ -101,6 +103,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
+        /// <param name="threshold">Similarity threshold.</param>
         /// <returns>A MinMax object.</returns>
         public List<Match> GetMatches(Bitmap contextImg, Image<Bgr, byte> searchImg, double threshold)
         {
@@ -115,6 +118,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
+        /// <param name="threshold">Similarity threshold.</param>
         /// <returns>A MinMax object.</returns>
         public abstract List<Match> GetMatches(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg, double threshold);
     }
