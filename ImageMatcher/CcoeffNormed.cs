@@ -59,7 +59,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
             {
                 for (int col = 0; col < matchTemplate.Cols; col++)
                 {
-                    if (matchTemplate[row, col].Intensity > 0.9)
+                    if (matchTemplate[row, col].Intensity >= threshold)
                     {
                         rs.Add(new Match(new Rectangle(new Point(col, row), searchImg.Size), matchTemplate[row, col].Intensity));
                     }
