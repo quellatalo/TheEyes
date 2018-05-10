@@ -571,11 +571,9 @@ namespace Quellatalo.Nin.TheEyes
                 {
                     foreach (Pattern pattern in patterns)
                     {
-                        MinMax minMax = pattern.Matcher.GetMinMax(display, pattern.Image);
-                        if (minMax.Max >= pattern.Threshold)
+                        result = GraphicX.Instance.Find(display, pattern);
+                        if (result != null || watch.ElapsedMilliseconds >= timeoutMilliseconds)
                         {
-                            Rectangle rec = new Rectangle(Rectangle.X + minMax.MaxLoc.X, Rectangle.Y + minMax.MaxLoc.Y, pattern.Image.Size.Width, pattern.Image.Size.Height);
-                            result = new Match(rec, minMax.Max);
                             break;
                         }
                     }
