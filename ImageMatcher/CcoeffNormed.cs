@@ -68,9 +68,9 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
                             {
                                 found.MinMax(out double[] min, out double[] max, out Point[] minPos, out Point[] maxPos);
                                 rs.Add(new Match(new Rectangle(col + maxPos[0].X, row + maxPos[0].Y, searchImg.Width, searchImg.Height), max[0]));
+                                col += maxPos[0].X + searchImg.Width - 1;
                             }
                             matchTemplate.GetSubRect(foundRect).SetZero();
-                            col += searchImg.Width - 1;
                         }
                     }
                 }
