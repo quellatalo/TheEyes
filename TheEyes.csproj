@@ -62,7 +62,6 @@
     <Compile Include="ImageMatcher\ImageMatcher.cs" />
     <Compile Include="InvalidPatternException.cs" />
     <Compile Include="Match.cs" />
-    <Compile Include="ImageMatcher\MinMax.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransparentForm.cs">
