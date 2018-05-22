@@ -11,12 +11,12 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
     /// </summary>
     public class CcoeffNormed : ImageMatcher
     {
-        private static ImageMatcher instance;
+        private static CcoeffNormed instance;
 
         /// <summary>
         /// Get an instance of ImageMatcher.
         /// </summary>
-        public static ImageMatcher Instance
+        public static CcoeffNormed Instance
         {
             get
             {
@@ -33,16 +33,16 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
-        /// <returns>A MinMax object.</returns>
-        public override MinMax GetMinMax(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg)
+        /// <returns>A Match object.</returns>
+        public override Match GetMax(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg)
         {
-            MinMax minMax = new MinMax();
-            contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed).MinMax(out double[] min, out double[] max, out Point[] minLoc, out Point[] maxLoc);
-            minMax.Min = min[0];
-            minMax.Max = max[0];
-            minMax.MinLoc = minLoc[0];
-            minMax.MaxLoc = maxLoc[0];
-            return minMax;
+            Match result = null;
+            using (Image<Gray, float> matchTemplate = contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed))
+            {
+                matchTemplate.MinMax(out double[] min, out double[] max, out Point[] minP, out Point[] maxP);
+                result = new Match(new Rectangle(maxP[0], searchImg.Size), max[0]);
+            }
+            return result;
         }
 
         /// <summary>
@@ -51,18 +51,27 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
         /// <param name="threshold">Similarity threshold.</param>
-        /// <returns>A MinMax object.</returns>
+        /// <returns>A List of Match objects.</returns>
         public override List<Match> GetMatches(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg, double threshold)
         {
             List<Match> rs = new List<Match>();
-            Image<Gray, float> matchTemplate = contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed);
-            for (int row = 0; row < matchTemplate.Rows; row++)
+            using (Image<Gray, float> matchTemplate = contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed))
             {
-                for (int col = 0; col < matchTemplate.Cols; col++)
+                for (int row = 0; row < matchTemplate.Rows; row++)
                 {
-                    if (matchTemplate[row, col].Intensity >= threshold)
+                    for (int col = 0; col < matchTemplate.Cols; col++)
                     {
-                        rs.Add(new Match(new Rectangle(new Point(col, row), searchImg.Size), matchTemplate[row, col].Intensity));
+                        if (matchTemplate[row, col].Intensity >= threshold)
+                        {
+                            Rectangle foundRect = new Rectangle(col, row, searchImg.Width, searchImg.Height);
+                            using (Image<Gray, float> found = matchTemplate.Copy(foundRect))
+                            {
+                                found.MinMax(out double[] min, out double[] max, out Point[] minPos, out Point[] maxPos);
+                                rs.Add(new Match(new Rectangle(col + maxPos[0].X, row + maxPos[0].Y, searchImg.Width, searchImg.Height), max[0]));
+                            }
+                            matchTemplate.GetSubRect(foundRect).SetZero();
+                            col += searchImg.Width - 1;
+                        }
                     }
                 }
             }

@@ -8,12 +8,13 @@
     <owners>Quellatalo Nin</owners>
     <projectUrl>https://github.com/quellatalo/TheEyes</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This TheEyes library provides methods to read and find images on the screen. A part of alternative tools to sikulix.</description>
+    <description>This TheEyes library makes it easy to read, find, and highlight images or windows' screens.</description>
     <releaseNotes>
-0.2.4.2
-+ Improve WaitAny's response
+0.2.5
++ Fix CcoeffNormed findall bug of duplication
++ Change ImageMatcher structure 
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>sikuli sikulix macro automation screen image picture finding searching reading rpa</tags>
+    <tags>screen image picture finding searching reading rpa</tags>
   </metadata>
 </package>

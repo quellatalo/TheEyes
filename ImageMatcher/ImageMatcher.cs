@@ -11,12 +11,12 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
     public abstract class ImageMatcher
     {
         /// <summary>
-        /// Find min and max values and locations.
+        /// Finds max value and location.
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
-        /// <returns>A MinMax object.</returns>
-        public MinMax GetMinMax(Bitmap contextImg, Bitmap searchImg)
+        /// <returns>A Match object.</returns>
+        public Match GetMax(Bitmap contextImg, Bitmap searchImg)
         {
             using
                 (
@@ -24,45 +24,45 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
                 reg = new Image<Bgr, byte>(contextImg)
                 )
             {
-                return GetMinMax(reg, image);
+                return GetMax(reg, image);
             }
         }
 
         /// <summary>
-        /// Find min and max values and locations.
+        /// Finds max value and location.
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
-        /// <returns>A MinMax object.</returns>
-        public MinMax GetMinMax(Image<Bgr, byte> contextImg, Bitmap searchImg)
+        /// <returns>A Match object.</returns>
+        public Match GetMax(Image<Bgr, byte> contextImg, Bitmap searchImg)
         {
             using (Image<Bgr, byte> image = new Image<Bgr, byte>(searchImg))
             {
-                return GetMinMax(contextImg, image);
+                return GetMax(contextImg, image);
             }
         }
 
         /// <summary>
-        /// Find min and max values and locations.
+        /// Finds max value and location.
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
-        /// <returns>A MinMax object.</returns>
-        public MinMax GetMinMax(Bitmap contextImg, Image<Bgr, byte> searchImg)
+        /// <returns>A Match object.</returns>
+        public Match GetMax(Bitmap contextImg, Image<Bgr, byte> searchImg)
         {
             using (Image<Bgr, byte> reg = new Image<Bgr, byte>(contextImg))
             {
-                return GetMinMax(reg, searchImg);
+                return GetMax(reg, searchImg);
             }
         }
 
         /// <summary>
-        /// Find min and max values and locations.
+        /// Finds max value and location.
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
-        /// <returns>A MinMax object.</returns>
-        public abstract MinMax GetMinMax(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg);
+        /// <returns>A Match object.</returns>
+        public abstract Match GetMax(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg);
 
         /// <summary>
         /// Find all the matches above or equal the threshold.
@@ -70,7 +70,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
         /// <param name="threshold">Similarity threshold.</param>
-        /// <returns>A MinMax object.</returns>
+        /// <returns>A List of Match objects.</returns>
         public List<Match> GetMatches(Bitmap contextImg, Bitmap searchImg, double threshold)
         {
             using
@@ -89,7 +89,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
         /// <param name="threshold">Similarity threshold.</param>
-        /// <returns>A MinMax object.</returns>
+        /// <returns>A List of Match objects.</returns>
         public List<Match> GetMatches(Image<Bgr, byte> contextImg, Bitmap searchImg, double threshold)
         {
             using (Image<Bgr, byte> image = new Image<Bgr, byte>(searchImg))
@@ -104,7 +104,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
         /// <param name="threshold">Similarity threshold.</param>
-        /// <returns>A MinMax object.</returns>
+        /// <returns>A List of Match objects.</returns>
         public List<Match> GetMatches(Bitmap contextImg, Image<Bgr, byte> searchImg, double threshold)
         {
             using (Image<Bgr, byte> reg = new Image<Bgr, byte>(contextImg))

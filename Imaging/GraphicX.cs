@@ -49,11 +49,10 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         public Match Find(Image<Bgr, byte> image, Pattern pattern)
         {
             Match match = null;
-            MinMax minMax = pattern.Matcher.GetMinMax(image, pattern.Image);
-            if (minMax.Max >= pattern.Threshold)
+            Match max = pattern.Matcher.GetMax(image, pattern.Image);
+            if (max.Similarity >= pattern.Threshold)
             {
-                Rectangle ma = new Rectangle(minMax.MaxLoc.X, minMax.MaxLoc.Y, pattern.Image.Size.Width, pattern.Image.Height);
-                match = new Match(ma, minMax.Max);
+                match = max;
             }
             return match;
         }
