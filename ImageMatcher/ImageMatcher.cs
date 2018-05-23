@@ -119,7 +119,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>
         /// <param name="threshold">Similarity threshold.</param>
-        /// <returns>A MinMax object.</returns>
+        /// <returns>A List of Match objects.</returns>
         public abstract List<Match> GetMatches(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg, double threshold);
     }
 }

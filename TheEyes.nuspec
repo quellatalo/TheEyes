@@ -10,9 +10,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This TheEyes library makes it easy to read, find, and highlight images or windows' screens.</description>
     <releaseNotes>
-0.2.5
-+ Fix CcoeffNormed findall bug of duplication
-+ Change ImageMatcher structure 
+0.2.5.1
++ Improve CcoeffNormed findall performance
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>screen image picture finding searching reading rpa</tags>

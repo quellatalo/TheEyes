@@ -2,7 +2,6 @@
 using Emgu.CV.OCR;
 using Emgu.CV.Structure;
 using Quellatalo.Nin.HOCRReader;
-using Quellatalo.Nin.TheEyes.ImageMatcher;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -62,7 +61,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// </summary>
         /// <param name="image">Image to find in.</param>
         /// <param name="pattern">Pattern to find.</param>
-        /// <returns>A list of Match.</returns>
+        /// <returns>A list of Match objects.</returns>
         public List<Match> FindAll(Bitmap image, Pattern pattern)
         {
             using (Image<Bgr, byte> reg = new Image<Bgr, byte>(image))
@@ -76,7 +75,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// </summary>
         /// <param name="image">Image to find in.</param>
         /// <param name="pattern">Pattern to find.</param>
-        /// <returns>A list of Match.</returns>
+        /// <returns>A list of Match objects.</returns>
         public List<Match> FindAll(Image<Bgr, byte> image, Pattern pattern)
         {
             return pattern.Matcher.GetMatches(image, pattern.Image, pattern.Threshold);

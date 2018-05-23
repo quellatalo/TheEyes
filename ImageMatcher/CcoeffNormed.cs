@@ -54,25 +54,32 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         /// <returns>A List of Match objects.</returns>
         public override List<Match> GetMatches(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg, double threshold)
         {
+            int halfWidth = searchImg.Width / 2;
+            int halfHeight = searchImg.Height / 2;
+            int foundX, foundY, foundWidth, foundHeight;
             List<Match> rs = new List<Match>();
             using (Image<Gray, float> matchTemplate = contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed))
             {
-                for (int row = 0; row < matchTemplate.Rows; row++)
+                matchTemplate.MinMax(out double[] min, out double[] max, out Point[] minPos, out Point[] maxPos);
+                while (max[0] >= threshold)
                 {
-                    for (int col = 0; col < matchTemplate.Cols; col++)
+                    rs.Add(new Match(new Rectangle(maxPos[0].X, maxPos[0].Y, searchImg.Width, searchImg.Height), max[0]));
+                    foundX = maxPos[0].X - halfWidth;
+                    foundY = maxPos[0].Y - halfHeight;
+                    foundWidth = searchImg.Width;
+                    foundHeight = searchImg.Height;
+                    if (foundX < 0)
                     {
-                        if (matchTemplate[row, col].Intensity >= threshold)
-                        {
-                            Rectangle foundRect = new Rectangle(col, row, searchImg.Width, searchImg.Height);
-                            using (Image<Gray, float> found = matchTemplate.Copy(foundRect))
-                            {
-                                found.MinMax(out double[] min, out double[] max, out Point[] minPos, out Point[] maxPos);
-                                rs.Add(new Match(new Rectangle(col + maxPos[0].X, row + maxPos[0].Y, searchImg.Width, searchImg.Height), max[0]));
-                                col += maxPos[0].X + searchImg.Width - 1;
-                            }
-                            matchTemplate.GetSubRect(foundRect).SetZero();
-                        }
+                        foundWidth += foundX;
+                        foundX = 0;
                     }
+                    if (foundY < 0)
+                    {
+                        foundHeight += foundY;
+                        foundY = 0;
+                    }
+                    matchTemplate.GetSubRect(new Rectangle(foundX, foundY, foundWidth, foundHeight)).SetZero();
+                    matchTemplate.MinMax(out min, out max, out minPos, out maxPos);
                 }
             }
             return rs;
