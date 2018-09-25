@@ -10,8 +10,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This TheEyes library makes it easy to read, find, and highlight images or windows' screens.</description>
     <releaseNotes>
-0.2.5.1
-+ Improve CcoeffNormed findall performance
+0.2.5.2
++ Update HOCR nuget reference
++ Remove the deprecated InvalidPatternException
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>screen image picture finding searching reading rpa</tags>

@@ -39,8 +39,8 @@
     <Reference Include="Emgu.CV.World, Version=3.3.0.2824, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EMGU.CV.3.3.0.2824\lib\net35\Emgu.CV.World.dll</HintPath>
     </Reference>
-    <Reference Include="HOCRReader, Version=0.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quellatalo.Nin.HOCRReader.0.0.3\lib\net20\HOCRReader.dll</HintPath>
+    <Reference Include="HOCRReader, Version=0.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quellatalo.Nin.HOCRReader.0.0.4\lib\net20\HOCRReader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,7 +60,6 @@
     <Compile Include="Imaging\GraphicX.cs" />
     <Compile Include="ImageMatcher\CcoeffNormed.cs" />
     <Compile Include="ImageMatcher\ImageMatcher.cs" />
-    <Compile Include="InvalidPatternException.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

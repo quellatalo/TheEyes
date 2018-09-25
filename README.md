@@ -1,6 +1,6 @@
 # TheEyes
 
-This TheEyes library provides methods to read and find images on the screen. A part of alternative tools to [sikulix](http://sikulix.com/).
+This TheEyes library makes it easy to read and find images on the screen.
 
 _This library was built and tested on Windows 10 (64bit) with .NET Framework 3.5._
 
@@ -31,7 +31,7 @@ void HandsAndEyesTest()
         // Highlight the Paint's window area
         Area area = new Area(app.GetMainWindowRectangle());
         area.Highlight(brush);
-        Thread.Sleep(2222); // wait, just to observer
+        Thread.Sleep(2222); // wait, just to observe
         Area.ClearHighlight(); // clear the highlight
 
         // Prepare some points to draw in sequence
