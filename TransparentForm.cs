@@ -9,6 +9,7 @@ namespace Quellatalo.Nin.TheEyes
     {
         internal static Color TransparentKey { get; set; } = Color.LimeGreen;
         private Graphics g;
+        private Action refreshAction;
         internal TransparentForm()
         {
             FormBorderStyle = FormBorderStyle.None;
@@ -19,6 +20,7 @@ namespace Quellatalo.Nin.TheEyes
             Size = SystemInformation.VirtualScreen.Size;
             Location = SystemInformation.VirtualScreen.Location;
             g = CreateGraphics();
+            refreshAction = new Action(base.Refresh);
         }
 
         protected override CreateParams CreateParams
@@ -52,7 +54,7 @@ namespace Quellatalo.Nin.TheEyes
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(base.Refresh));
+                BeginInvoke(refreshAction);
             }
             else
             {
