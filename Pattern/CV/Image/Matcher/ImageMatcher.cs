@@ -3,7 +3,7 @@ using Emgu.CV.Structure;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Quellatalo.Nin.TheEyes.ImageMatcher
+namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
 {
     /// <summary>
     /// ImageMatcher abstraction.
