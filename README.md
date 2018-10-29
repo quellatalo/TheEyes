@@ -28,11 +28,6 @@ void HandsAndEyesTest()
 
     using (Brush brush = new SolidBrush(Color.FromArgb(63, Color.Red)))
     {
-        Area full = new Area();
-        full.Highlight(brush);
-        Thread.Sleep(2222); // wait, just to observe
-        Area.ClearHighlight(); // clear the highlight
-
         // Highlight the Paint's window area
         Area area = new Area(app.GetMainWindowRectangle());
         area.Highlight(brush);
