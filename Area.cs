@@ -183,7 +183,7 @@ namespace Quellatalo.Nin.TheEyes
             Bitmap bitmap = new Bitmap(Rectangle.Width, Rectangle.Height);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                g.CopyFromScreen(Rectangle.Location, SystemInformation.VirtualScreen.Location, Rectangle.Size);
+                g.CopyFromScreen(Rectangle.Location, Point.Empty, Rectangle.Size);
             }
             return bitmap;
         }

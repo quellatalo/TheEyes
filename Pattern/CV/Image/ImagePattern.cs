@@ -79,14 +79,22 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image
         {
             Image.Dispose();
         }
-
+        /// <summary>
+        /// Finds the match with highest similarity higher than the threshold.
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>A Match object.</returns>
         public Match GetMax(Bitmap image)
         {
             Match match = Matcher.GetMax(image, Image);
             if (match.Similarity < Threshold) match = null;
             return match;
         }
-
+        /// <summary>
+        /// Finds all matches with similarity  higher than the threshold.
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>A Match object.</returns>
         public List<Match> GetMatches(Bitmap image)
         {
             return Matcher.GetMatches(image, Image, Threshold);

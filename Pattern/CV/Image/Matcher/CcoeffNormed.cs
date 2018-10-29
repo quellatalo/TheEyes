@@ -14,7 +14,7 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         private static CcoeffNormed instance;
 
         /// <summary>
-        /// Get an instance of ImageMatcher.
+        /// Get the instance of CcoeffNormed.
         /// </summary>
         public static CcoeffNormed Instance
         {
@@ -29,7 +29,7 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         private CcoeffNormed() { }
 
         /// <summary>
-        /// Find min and max values and locations.
+        /// Finds the match with highest similarity.
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>

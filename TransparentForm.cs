@@ -78,7 +78,7 @@ namespace Quellatalo.Nin.TheEyes
             GraphicX.Instance.Highlight(g, area.Rectangle, pen);
         }
 
-        internal void Caption(Point location, String str, Font font, Brush brush)
+        internal void Caption(Point location, string str, Font font, Brush brush)
         {
             if (InvokeRequired)
             {

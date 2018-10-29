@@ -10,9 +10,15 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This TheEyes library makes it easy to read, find, and highlight images or windows' screens.</description>
     <releaseNotes>
-0.2.5.2
+0.3.0.0
+Warning: Significant change in project structure compared to version 0.2.x.x
++ Quellatalo.Nin.TheEyes.Pattern -> Quellatalo.Nin.TheEyes.Pattern.CV.Image.ImagePattern
++ Provide IPattern interface to build customized Pattern classes
+Other changes
++ Improve position recognition in some rare situations of unsual multi-screen positioning setting
 + Update HOCR nuget reference
 + Remove the deprecated InvalidPatternException
+Please report bugs or issues on the project's github page: https://github.com/quellatalo/TheEyes
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>screen image picture finding searching reading rpa</tags>
