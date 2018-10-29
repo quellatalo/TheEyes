@@ -4,7 +4,7 @@ using Emgu.CV.Structure;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Quellatalo.Nin.TheEyes.ImageMatcher
+namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
 {
     /// <summary>
     /// OpenCV CcoeffNormed matching system.
@@ -14,7 +14,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         private static CcoeffNormed instance;
 
         /// <summary>
-        /// Get an instance of ImageMatcher.
+        /// Get the instance of CcoeffNormed.
         /// </summary>
         public static CcoeffNormed Instance
         {
@@ -29,7 +29,7 @@ namespace Quellatalo.Nin.TheEyes.ImageMatcher
         private CcoeffNormed() { }
 
         /// <summary>
-        /// Find min and max values and locations.
+        /// Finds the match with highest similarity.
         /// </summary>
         /// <param name="contextImg">The context on which the search will do.</param>
         /// <param name="searchImg">The target to find in the context.</param>

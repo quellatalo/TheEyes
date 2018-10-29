@@ -1,7 +1,7 @@
 ﻿using Emgu.CV.OCR;
 using Quellatalo.Nin.HOCRReader;
-using Quellatalo.Nin.TheEyes.ImageMatcher;
 using Quellatalo.Nin.TheEyes.Imaging;
+using Quellatalo.Nin.TheEyes.Pattern;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -183,7 +183,7 @@ namespace Quellatalo.Nin.TheEyes
             Bitmap bitmap = new Bitmap(Rectangle.Width, Rectangle.Height);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                g.CopyFromScreen(Rectangle.Location, SystemInformation.VirtualScreen.Location, Rectangle.Size);
+                g.CopyFromScreen(Rectangle.Location, Point.Empty, Rectangle.Size);
             }
             return bitmap;
         }
@@ -319,7 +319,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="pattern">Pattern to find.</param>
         /// <returns>A Match object, or null if not found.</returns>
-        public Match Find(Pattern pattern)
+        public Match Find(IPattern pattern)
         {
             using (Bitmap display = GetDisplayingImage())
             {
@@ -332,41 +332,11 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="pattern">Pattern to find.</param>
         /// <returns>A list of Match.</returns>
-        public List<Match> FindAll(Pattern pattern)
+        public List<Match> FindAll(IPattern pattern)
         {
             using (Bitmap display = GetDisplayingImage())
             {
                 return GraphicX.Instance.FindAll(display, pattern);
-            }
-        }
-
-        /// <summary>
-        /// Find the first line which contains/match a specified text.
-        /// </summary>
-        /// <param name="text">The text to find.</param>
-        /// /// <param name="tesseract">The tesseract instance.</param>
-        /// <param name="searchOption">Whether the line contains the text, or match the text.</param>
-        /// <returns>An instance of OCRLine.</returns>
-        public OCRLine Find(string text, Tesseract tesseract, SearchOptions searchOption = SearchOptions.Containing)
-        {
-            using (Bitmap display = GetDisplayingImage())
-            {
-                return GraphicX.Instance.FindText(text, display, tesseract, searchOption);
-            }
-        }
-
-        /// <summary>
-        /// Find the first line which contains/match a specified text.
-        /// </summary>
-        /// <param name="text">The text to find.</param>
-        /// /// <param name="tesseract">The tesseract instance.</param>
-        /// <param name="searchOption">Whether the line contains the text, or match the text.</param>
-        /// <returns>An instance of OCRLine.</returns>
-        public List<OCRLine> FindAll(string text, Tesseract tesseract, SearchOptions searchOption = SearchOptions.Containing)
-        {
-            using (Bitmap display = GetDisplayingImage())
-            {
-                return GraphicX.Instance.FindAllText(text, display, tesseract, searchOption);
             }
         }
 
@@ -481,7 +451,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="pattern">The pattern to wait for.</param>
         /// <param name="timeoutMilliseconds">Timeout limit.</param>
         /// <returns>A match if found, else null.</returns>
-        public Match WaitFor(Pattern pattern, long timeoutMilliseconds)
+        public Match WaitFor(IPattern pattern, long timeoutMilliseconds)
         {
             Stopwatch watch = Stopwatch.StartNew();
             Match result = null;
@@ -497,7 +467,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="pattern">The pattern to wait for.</param>
         /// <returns>A match if found, else null.</returns>
-        public Match WaitFor(Pattern pattern)
+        public Match WaitFor(IPattern pattern)
         {
             return WaitFor(pattern, WaitTimeMilliseconds);
         }
@@ -509,7 +479,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="count">The occurences to wait for.</param>
         /// <param name="timeoutMilliseconds">Timeout limit.</param>
         /// <returns>A list of Match(es) found.</returns>
-        public List<Match> WaitFor(Pattern pattern, uint count, long timeoutMilliseconds)
+        public List<Match> WaitFor(IPattern pattern, uint count, long timeoutMilliseconds)
         {
             Stopwatch watch = Stopwatch.StartNew();
             List<Match> result = new List<Match>();
@@ -526,7 +496,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="pattern">The pattern to wait for.</param>
         /// <param name="count">The occurences to wait for.</param>
         /// <returns>A list of Match(es) found.</returns>
-        public List<Match> WaitFor(Pattern pattern, uint count)
+        public List<Match> WaitFor(IPattern pattern, uint count)
         {
             return WaitFor(pattern, count, WaitTimeMilliseconds);
         }
@@ -536,7 +506,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="pattern">The specified pattern.</param>
         /// <param name="timeoutMilliseconds">Wait timeout.</param>
-        public void WaitVanish(Pattern pattern, long timeoutMilliseconds)
+        public void WaitVanish(IPattern pattern, long timeoutMilliseconds)
         {
             Stopwatch watch = Stopwatch.StartNew();
             Match match = Find(pattern);
@@ -550,7 +520,7 @@ namespace Quellatalo.Nin.TheEyes
         /// Waits for a pattern to vanish. With default wait time.
         /// </summary>
         /// <param name="pattern">The specified pattern.</param>
-        public void WaitVanish(Pattern pattern)
+        public void WaitVanish(IPattern pattern)
         {
             WaitVanish(pattern, WaitTimeMilliseconds);
         }
@@ -561,7 +531,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="patterns">Patterns to find.</param>
         /// <param name="timeoutMilliseconds">Timeout limit.</param>
         /// <returns>A Match.</returns>
-        public Match WaitAny(Pattern[] patterns, long timeoutMilliseconds)
+        public Match WaitAny(IPattern[] patterns, long timeoutMilliseconds)
         {
             Match result = null;
             Stopwatch watch = Stopwatch.StartNew();
@@ -569,7 +539,7 @@ namespace Quellatalo.Nin.TheEyes
             {
                 using (Bitmap display = GetDisplayingImage())
                 {
-                    foreach (Pattern pattern in patterns)
+                    foreach (IPattern pattern in patterns)
                     {
                         result = GraphicX.Instance.Find(display, pattern);
                         if (result != null || watch.ElapsedMilliseconds >= timeoutMilliseconds)
@@ -588,7 +558,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="patterns">Patterns to find.</param>
         /// <param name="timeoutMilliseconds">Timeout limit.</param>
         /// <returns>A Match.</returns>
-        public Match WaitAny(List<Pattern> patterns, long timeoutMilliseconds)
+        public Match WaitAny(List<IPattern> patterns, long timeoutMilliseconds)
         {
             return WaitAny(patterns.ToArray(), timeoutMilliseconds);
         }
@@ -598,7 +568,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="patterns">Patterns to find.</param>
         /// <returns>A Match.</returns>
-        public Match WaitAny(Pattern[] patterns)
+        public Match WaitAny(IPattern[] patterns)
         {
             return WaitAny(patterns, WaitTimeMilliseconds);
         }
@@ -608,7 +578,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="patterns">Patterns to find.</param>
         /// <returns>A Match.</returns>
-        public Match WaitAny(List<Pattern> patterns)
+        public Match WaitAny(List<IPattern> patterns)
         {
             return WaitAny(patterns.ToArray(), WaitTimeMilliseconds);
         }
