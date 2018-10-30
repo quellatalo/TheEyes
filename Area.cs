@@ -1,8 +1,5 @@
-﻿using Emgu.CV.OCR;
-using Quellatalo.Nin.HOCRReader;
-using Quellatalo.Nin.TheEyes.Imaging;
+﻿using Quellatalo.Nin.TheEyes.Imaging;
 using Quellatalo.Nin.TheEyes.Pattern;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -33,7 +30,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <summary>
         /// TransparencyKey for highlight background.
         /// </summary>
-        public static Color TransparencyKey { get { return TransparentForm.TransparentKey; } set { TransparentForm.TransparentKey = value; } }
+        public static Color TransparencyKey { get => TransparentForm.TransparentKey; set => TransparentForm.TransparentKey = value; }
 
         internal static TransparentForm highlightForm = new TransparentForm();
 
@@ -108,7 +105,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         public Rectangle Rectangle
         {
-            get { return rectangle; }
+            get => rectangle;
             set
             {
                 rectangle = value;
@@ -388,7 +385,7 @@ namespace Quellatalo.Nin.TheEyes
         /// <param name="str">Caption.</param>
         /// <param name="font">Font.</param>
         /// <param name="brush">Brush</param>
-        public void Caption(String str, Font font, Brush brush)
+        public void Caption(string str, Font font, Brush brush)
         {
             highlightForm.Caption(TopLeft, str, font, brush);
         }
@@ -397,7 +394,7 @@ namespace Quellatalo.Nin.TheEyes
         /// Captions the area.
         /// </summary>
         /// <param name="str">Caption</param>
-        public void Caption(String str)
+        public void Caption(string str)
         {
             using (SolidBrush brush = new SolidBrush(HighlightColor))
             {
@@ -410,7 +407,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="str">Caption.</param>
         /// <param name="font">Font.</param>
-        public void Caption(String str, Font font)
+        public void Caption(string str, Font font)
         {
             using (SolidBrush brush = new SolidBrush(HighlightColor))
             {
@@ -423,7 +420,7 @@ namespace Quellatalo.Nin.TheEyes
         /// </summary>
         /// <param name="str">Caption.</param>
         /// <param name="brush">Brush.</param>
-        public void Caption(String str, Brush brush)
+        public void Caption(string str, Brush brush)
         {
             Caption(str, HighlightFont, brush);
         }

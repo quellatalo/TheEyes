@@ -1,9 +1,4 @@
-﻿using Emgu.CV;
-using Emgu.CV.OCR;
-using Emgu.CV.Structure;
-using Quellatalo.Nin.HOCRReader;
-using Quellatalo.Nin.TheEyes.Pattern;
-using System;
+﻿using Quellatalo.Nin.TheEyes.Pattern;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -22,7 +17,11 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         {
             get
             {
-                if (instance == null) instance = new GraphicX();
+                if (instance == null)
+                {
+                    instance = new GraphicX();
+                }
+
                 return instance;
             }
         }
@@ -77,7 +76,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
         /// <param name="str">Caption text.</param>
         /// <param name="font">Caption font.</param>
         /// <param name="brush">Caption brush.</param>
-        public void Caption(Graphics g, Point loc, String str, Font font, Brush brush)
+        public void Caption(Graphics g, Point loc, string str, Font font, Brush brush)
         {
             g.DrawString(str, font, brush, loc);
         }
