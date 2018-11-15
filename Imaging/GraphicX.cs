@@ -10,6 +10,7 @@ namespace Quellatalo.Nin.TheEyes.Imaging
     public class GraphicX
     {
         private static GraphicX instance;
+        private GraphicX() { }
         /// <summary>
         /// Gets GraphicX instance.
         /// </summary>
