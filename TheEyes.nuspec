@@ -10,8 +10,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This TheEyes library makes it easy to read, find, and highlight images or windows' screens.</description>
     <releaseNotes>
-0.3.1.0
-- GraphicX is now singleton for sure
+0.3.1.1
+- minor fix
 
 Please report bugs or issues on the project's github page: https://github.com/quellatalo/TheEyes
     </releaseNotes>

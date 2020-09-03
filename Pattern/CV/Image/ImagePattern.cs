@@ -26,6 +26,7 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image
         /// Similarity threshold.
         /// </summary>
         public double Threshold { get; set; }
+        private bool isDisposed;
         /// <summary>
         /// Constructs a pattern.
         /// </summary>
@@ -77,7 +78,24 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image
         /// </summary>
         public void Dispose()
         {
-            Image.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        /// <summary>
+        /// Clean up.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (isDisposed) return;
+
+            if (disposing)
+            {
+                // free managed resources
+                Image.Dispose();
+            }
+
+            isDisposed = true;
         }
         /// <summary>
         /// Finds the match with highest similarity higher than the threshold.
