@@ -11,20 +11,12 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
     /// </summary>
     public class CcoeffNormed : ImageMatcher
     {
-        private static CcoeffNormed instance;
+        private static CcoeffNormed? _instance;
 
         /// <summary>
         /// Get the instance of CcoeffNormed.
         /// </summary>
-        public static CcoeffNormed Instance
-        {
-            get
-            {
-                if (instance == null) instance = new CcoeffNormed();
-                return instance;
-            }
-            private set { instance = value; }
-        }
+        public static CcoeffNormed Instance => _instance ??= new CcoeffNormed();
 
         private CcoeffNormed() { }
 
@@ -36,12 +28,10 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A Match object.</returns>
         public override Match GetMax(Image<Bgr, byte> contextImg, Image<Bgr, byte> searchImg)
         {
-            Match result = null;
-            using (Image<Gray, float> matchTemplate = contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed))
-            {
-                matchTemplate.MinMax(out double[] min, out double[] max, out Point[] minP, out Point[] maxP);
-                result = new Match(new Rectangle(maxP[0], searchImg.Size), max[0]);
-            }
+            Match result;
+            using Image<Gray, float> matchTemplate = contextImg.MatchTemplate(searchImg, TemplateMatchingType.CcoeffNormed);
+            matchTemplate.MinMax(out double[] min, out double[] max, out Point[] minP, out Point[] maxP);
+            result = new Match(new Rectangle(maxP[0], searchImg.Size), max[0]);
             return result;
         }
 

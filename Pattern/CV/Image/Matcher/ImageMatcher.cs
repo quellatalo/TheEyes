@@ -1,7 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
 {
@@ -18,14 +16,9 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A Match object.</returns>
         public Match GetMax(Bitmap contextImg, Bitmap searchImg)
         {
-            using
-                (
-                Image<Bgr, byte> image = new Image<Bgr, byte>(searchImg),
-                reg = new Image<Bgr, byte>(contextImg)
-                )
-            {
-                return GetMax(reg, image);
-            }
+            using Image<Bgr, byte> image = searchImg.ToImage<Bgr, byte>(),
+                reg = contextImg.ToImage<Bgr, byte>();
+            return GetMax(reg, image);
         }
 
         /// <summary>
@@ -36,10 +29,8 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A Match object.</returns>
         public Match GetMax(Image<Bgr, byte> contextImg, Bitmap searchImg)
         {
-            using (Image<Bgr, byte> image = new Image<Bgr, byte>(searchImg))
-            {
-                return GetMax(contextImg, image);
-            }
+            using var image = searchImg.ToImage<Bgr, byte>();
+            return GetMax(contextImg, image);
         }
 
         /// <summary>
@@ -50,10 +41,8 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A Match object.</returns>
         public Match GetMax(Bitmap contextImg, Image<Bgr, byte> searchImg)
         {
-            using (Image<Bgr, byte> reg = new Image<Bgr, byte>(contextImg))
-            {
-                return GetMax(reg, searchImg);
-            }
+            using var reg = contextImg.ToImage<Bgr, byte>();
+            return GetMax(reg, searchImg);
         }
 
         /// <summary>
@@ -73,14 +62,9 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A List of Match objects.</returns>
         public List<Match> GetMatches(Bitmap contextImg, Bitmap searchImg, double threshold)
         {
-            using
-                (
-                Image<Bgr, byte> image = new Image<Bgr, byte>(searchImg),
-                reg = new Image<Bgr, byte>(contextImg)
-                )
-            {
-                return GetMatches(reg, image, threshold);
-            }
+            using Image<Bgr, byte> image = searchImg.ToImage<Bgr, byte>(),
+                reg = contextImg.ToImage<Bgr, byte>();
+            return GetMatches(reg, image, threshold);
         }
 
         /// <summary>
@@ -92,10 +76,8 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A List of Match objects.</returns>
         public List<Match> GetMatches(Image<Bgr, byte> contextImg, Bitmap searchImg, double threshold)
         {
-            using (Image<Bgr, byte> image = new Image<Bgr, byte>(searchImg))
-            {
-                return GetMatches(contextImg, image, threshold);
-            }
+            using var image = searchImg.ToImage<Bgr, byte>();
+            return GetMatches(contextImg, image, threshold);
         }
 
         /// <summary>
@@ -107,10 +89,8 @@ namespace Quellatalo.Nin.TheEyes.Pattern.CV.Image.Matcher
         /// <returns>A List of Match objects.</returns>
         public List<Match> GetMatches(Bitmap contextImg, Image<Bgr, byte> searchImg, double threshold)
         {
-            using (Image<Bgr, byte> reg = new Image<Bgr, byte>(contextImg))
-            {
-                return GetMatches(reg, searchImg, threshold);
-            }
+            using var reg = contextImg.ToImage<Bgr, byte>();
+            return GetMatches(reg, searchImg, threshold);
         }
 
         /// <summary>
